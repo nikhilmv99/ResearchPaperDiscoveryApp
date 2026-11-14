@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "research-paper-analyzer"
+version = "0.1.0"
+description = "PDF ingestion and grounded research-paper analysis using hosted BGE embeddings and ChromaDB"
+requires-python = ">=3.10"
+dependencies = ["chromadb>=0.5,<2", "PyMuPDF>=1.24", "python-dotenv>=1", "openai>=1.30,<3", "httpx>=0.27", "transformers>=4.40,<6", "pytest>=8"]
+
+[project.scripts]
+research-analyzer = "research_analyzer.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
