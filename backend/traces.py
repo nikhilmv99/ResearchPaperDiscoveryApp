@@ -5,7 +5,7 @@ from statistics import median
 
 from . import config, tracing
 
-QUERY_NAMES = {"search", "ask", "compare"}  # the trace names used in main.py
+QUERY_NAMES = {"search", "ask", "compare","blocked"}  # the trace names used in main.py
 MAX_STEPS = 3000
 PAGE = 1000
 _OPTS = {"timeout_in_seconds": 30}
@@ -84,8 +84,12 @@ def list_traces(hours: int, limit: int) -> dict:
         inp = _parse(r.input)
         out.append({
             "trace_id": r.trace_id, "name": r.name, "user": r.user_id, "time": r.start_time.isoformat(),
-            "question": inp.get("question", "") if isinstance(inp, dict) else str(inp or ""),
-            "seconds": _seconds(r), "failed": _level(r) == "ERROR", "error": r.status_message,
+            "question": (
+    inp.get("question")
+    or f"Blocked: {inp.get('endpoint', '')} - Rule: {inp.get('rule', '')}"
+    if isinstance(inp, dict)
+    else str(inp or "")),
+            "seconds": _seconds(r), "failed": r.name == "blocked" or _level(r) == "ERROR", "error": r.status_message,
             "step_problems": sum(_level(s) in ("ERROR", "WARNING") for s in kids),
             "llm_calls": sum(s.type == "GENERATION" for s in kids),
             "tokens_in": sum(t[0] for t in tok), "tokens_out": sum(t[1] for t in tok),
