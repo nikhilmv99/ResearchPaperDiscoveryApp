@@ -14,6 +14,7 @@ Agentic RAG app: LLM query refinement -> arXiv / Semantic Scholar search -> loca
    pip install -r requirements.txt
    python -m backend.check_llm                            # tests the chat endpoint
    python -m backend.check_embed                          # tests the embedding endpoint
+   python -m backend.create_user admin --role admin       # Create Admin user - Set password on terminal
    uvicorn backend.main:app --port 8000                   # terminal 1 (keep to ONE worker)
    streamlit run frontend/app.py                          # terminal 2
    ```
