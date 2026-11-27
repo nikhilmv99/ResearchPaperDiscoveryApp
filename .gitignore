@@ -1,6 +1,5 @@
-node_modules/
-dist/
 .env
-.env.*
-!.env.example
-*.log
+data/
+.venv/
+__pycache__/
+*.crt
